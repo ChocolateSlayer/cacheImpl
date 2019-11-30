@@ -14,6 +14,7 @@ public class LFUCache implements Cache {
         this.size = size;
         this.values = new HashMap<>();
         this.counts = new HashMap<>();
+        counts.put(1, new LinkedHashSet<>());
     }
 
 
@@ -21,6 +22,9 @@ public class LFUCache implements Cache {
     public void put(int key, int value) {
         if (size < 1) return;
         if (values.containsKey(key)) {
+            LFUCacheEntry entry = values.get(key);
+            entry.setValue(value);
+            values.put(key, entry);
             get(key);
             return;
         }
@@ -31,9 +35,9 @@ public class LFUCache implements Cache {
         }
 
         values.put(key, new LFUCacheEntry(value, 1));
+
         min = 1;
         counts.get(1).add(key);
-
     }
 
     @Override

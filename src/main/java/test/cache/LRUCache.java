@@ -28,7 +28,7 @@ public class LRUCache implements Cache{
         } else {
             LRUCacheEntry entry = new LRUCacheEntry(key, value);
 
-            if (values.size() > size) {
+            if (values.size() >= size) {
                 values.remove(last.getKey());
                 removeEntry(last);
             }
