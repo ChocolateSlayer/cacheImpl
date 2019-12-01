@@ -1,84 +1,72 @@
 package test.cache;
 
 import org.junit.jupiter.api.Test;
-import org.junit.runner.RunWith;
-import org.springframework.test.context.junit4.SpringRunner;
 
 import static junit.framework.TestCase.assertNull;
 import static junit.framework.TestCase.assertSame;
 
-@RunWith(SpringRunner.class)
 public class LRUCacheTests {
 
-    private LRUCache cache;
+    private Cache<String, String> cache;
 
-    public LRUCacheTests() {
-        try {
-            this.cache = (LRUCache) new CacheBuilder()
-                    .size(3)
-                    .typeOf(CacheType.LRU)
-                    .build();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-    @Test
-    public void shouldBeCreatedEmpty() {
-        assertNull(cache.get(1));
+    public LRUCacheTests() throws Exception {
+        cache = new CacheBuilder<String, String>()
+                .typeOf(CacheType.LRU)
+                .size(3)
+                .build();
     }
 
     @Test
     public void shouldPutAndGetValue() {
-        cache.put(1, 1);
-        assertSame("Must be returned same as put", cache.get(1), 1);
+        cache.put("a", "a");
+        assertSame("Must be returned same as put", cache.get("a"), "a");
     }
 
     @Test
-    public void shouldWorkBelowCacheSize() {
-        cache.put(1, 1);
-        assertSame(cache.get(1), 1);
-        assertNull(cache.get(2));
-        cache.put(2, 2);
-        assertSame(cache.get(1), 1);
-        assertSame(cache.get(2), 2);
+    public void shouldNotGetBeforePut() {
+        cache.put("a", "a");
+        assertSame(cache.get("a"), "a");
+        assertNull(cache.get("b"));
+        cache.put("b", "b");
+        assertSame(cache.get("a"), "a");
+        assertSame(cache.get("b"), "b");
     }
 
     @Test
-    public void shouldRemoveOldestOnCacheOverflow() throws Exception {
-        cache.put(1, 1);
-        cache.put(2, 2);
-        cache.put(3, 3);
-        cache.put(4, 4);
-        assertNull(cache.get(1));
-        assertSame(cache.get(2), 2);
-        assertSame(cache.get(3), 3);
-        assertSame(cache.get(4), 4);
+    public void shouldRemoveOldestOnCacheOverflow() {
+        cache.put("a", "a");
+        cache.put("b", "b");
+        cache.put("c", "c");
+        cache.put("d", "d");
+        assertNull(cache.get("a"));
+        assertSame(cache.get("b"), "b");
+        assertSame(cache.get("c"), "c");
+        assertSame(cache.get("d"), "d");
     }
 
     @Test
-    public void shouldPutTopOnGet() throws Exception {
-        cache.put(1, 1);
-        cache.put(2, 2);
-        cache.put(3, 3);
-        cache.get(1);
-        cache.put(4, 4);
-        assertNull(cache.get(2));
-        assertSame(cache.get(1), 1);
-        assertSame(cache.get(3), 3);
-        assertSame(cache.get(4), 4);
+    public void shouldPutTopOnGet() {
+        cache.put("a", "a");
+        cache.put("b", "b");
+        cache.put("c", "c");
+        cache.get("a");
+        cache.put("d", "d");
+        assertNull(cache.get("b"));
+        assertSame(cache.get("a"), "a");
+        assertSame(cache.get("c"), "c");
+        assertSame(cache.get("d"), "d");
     }
 
     @Test
-    public void shouldPutTopOnPut() throws Exception {
-        cache.put(1, 1);
-        cache.put(2, 2);
-        cache.put(1, 2);
-        cache.put(3, 3);
-        cache.put(4, 4);
-        assertNull(cache.get(2));
-        assertSame(cache.get(1), 2);
-        assertSame(cache.get(3), 3);
-        assertSame(cache.get(4), 4);
+    public void shouldPutTopAndRenewOnPut() {
+        cache.put("a", "a");
+        cache.put("b", "b");
+        cache.put("a", "b");
+        cache.put("c", "c");
+        cache.put("d", "d");
+        assertNull(cache.get("b"));
+        assertSame(cache.get("a"), "b");
+        assertSame(cache.get("c"), "c");
+        assertSame(cache.get("d"), "d");
     }
 }

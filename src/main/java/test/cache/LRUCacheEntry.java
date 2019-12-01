@@ -1,15 +1,15 @@
 package test.cache;
 
-public class LRUCacheEntry {
+public class LRUCacheEntry<K, V> {
 
-    private int key;
-    private int value;
+    private K key;
+    private V value;
     private LRUCacheEntry prev;
     private LRUCacheEntry next;
 
-    public LRUCacheEntry(int key, int value){
-        this.key=key;
-        this.value=value;
+    public LRUCacheEntry(K key, V value) {
+        this.key = key;
+        this.value = value;
         this.prev = null;
         this.next = null;
     }
@@ -17,19 +17,19 @@ public class LRUCacheEntry {
     public LRUCacheEntry() {
     }
 
-    public int getKey() {
+    public K getKey() {
         return key;
     }
 
-    public void setKey(int key) {
+    public void setKey(K key) {
         this.key = key;
     }
 
-    public int getValue() {
+    public V getValue() {
         return value;
     }
 
-    public void setValue(int value) {
+    public void setValue(V value) {
         this.value = value;
     }
 

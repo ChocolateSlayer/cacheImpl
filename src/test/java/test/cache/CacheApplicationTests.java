@@ -1,20 +1,12 @@
 package test.cache;
 
 import org.junit.jupiter.api.Test;
-import org.junit.runner.RunWith;
-import org.springframework.test.context.junit4.SpringRunner;
 
 import static junit.framework.TestCase.assertEquals;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.instanceOf;
 
-@RunWith(SpringRunner.class)
 class CacheApplicationTests {
-
-    @Test
-    void contextLoads() {
-    }
-
     @Test
     public void shouldCreateExpectedObject() throws Exception {
 

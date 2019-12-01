@@ -2,10 +2,10 @@ package test.cache;
 
 import java.util.HashMap;
 
-public class LRUCache implements Cache{
+public class LRUCache<K, V> implements Cache<K, V> {
 
     private int size;
-    private HashMap<Integer, LRUCacheEntry> values;
+    private HashMap<K, LRUCacheEntry<K, V>> values;
     private LRUCacheEntry first;
     private LRUCacheEntry last;
 
@@ -16,17 +16,16 @@ public class LRUCache implements Cache{
     }
 
     @Override
-    public void put(int key, int value) {
+    public void put(K key, V value) {
         if (size < 1) return;
 
-        if (values.containsKey(key))
-        {
-            LRUCacheEntry entry = values.get(key);
+        if (values.containsKey(key)) {
+            LRUCacheEntry<K, V> entry = values.get(key);
             entry.setValue(value);
             removeEntry(entry);
             putEntryAtTop(entry);
         } else {
-            LRUCacheEntry entry = new LRUCacheEntry(key, value);
+            LRUCacheEntry entry = new LRUCacheEntry<>(key, value);
 
             if (values.size() >= size) {
                 values.remove(last.getKey());
@@ -38,11 +37,11 @@ public class LRUCache implements Cache{
     }
 
     @Override
-    public Integer get(int key) {
+    public V get(K key) {
 
         if (!values.containsKey(key)) return null;
 
-        LRUCacheEntry entry = values.get(key);
+        LRUCacheEntry<K, V> entry = values.get(key);
         removeEntry(entry);
         putEntryAtTop(entry);
 

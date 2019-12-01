@@ -1,22 +1,22 @@
 package test.cache;
 
-public class LFUCacheEntry {
-    private int value;
+public class LFUCacheEntry<V> {
+    private V value;
     private int frequency;
 
     public LFUCacheEntry() {
     }
 
-    public LFUCacheEntry(int value, int frequency) {
+    public LFUCacheEntry(V value, int frequency) {
         this.value = value;
         this.frequency = frequency;
     }
 
-    public int getValue() {
+    public V getValue() {
         return value;
     }
 
-    public void setValue(int value) {
+    public void setValue(V value) {
         this.value = value;
     }
 

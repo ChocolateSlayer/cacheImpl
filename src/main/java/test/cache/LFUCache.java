@@ -3,11 +3,11 @@ package test.cache;
 import java.util.HashMap;
 import java.util.LinkedHashSet;
 
-public class LFUCache implements Cache {
+public class LFUCache<K, V> implements Cache<K, V> {
 
     private int size;
-    private HashMap<Integer, LFUCacheEntry> values;
-    private HashMap<Integer, LinkedHashSet<Integer>> counts;
+    private HashMap<K, LFUCacheEntry<V>> values;
+    private HashMap<Integer, LinkedHashSet<K>> counts;
     private static Integer min = 0;
 
     public LFUCache(Integer size) {
@@ -19,32 +19,33 @@ public class LFUCache implements Cache {
 
 
     @Override
-    public void put(int key, int value) {
+    public void put(K key, V value) {
         if (size < 1) return;
         if (values.containsKey(key)) {
-            LFUCacheEntry entry = values.get(key);
+            LFUCacheEntry<V> entry = values.get(key);
             entry.setValue(value);
             values.put(key, entry);
             get(key);
             return;
         }
         if (values.size() >= size) {
-            int LFUKey = counts.get(min).iterator().next();
+            K LFUKey = counts.get(min).iterator().next();
             counts.get(min).remove(LFUKey);
             values.remove(LFUKey);
         }
 
-        values.put(key, new LFUCacheEntry(value, 1));
+        values.put(key, new LFUCacheEntry<>(value, 1));
 
         min = 1;
         counts.get(1).add(key);
     }
 
+
     @Override
-    public Integer get(int key) {
+    public V get(K key) {
         if (!values.containsKey(key)) return null;
 
-        LFUCacheEntry entry = values.get(key);
+        LFUCacheEntry<V> entry = values.get(key);
         int frequency = entry.getFrequency();
         entry.setFrequency(frequency + 1);
         values.put(key, entry);
