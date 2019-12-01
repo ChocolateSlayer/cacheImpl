@@ -27,3 +27,5 @@ LFUCacheTests provides tests for
 * Item should be put at first position on put if already in cache
 
 CacheApplicationTests provides test for checking if CacheBuildes creates expected object
+
+Run `$mvn test` to run tests
