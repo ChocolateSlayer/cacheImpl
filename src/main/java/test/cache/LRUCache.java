@@ -3,7 +3,6 @@ package test.cache;
 import java.util.HashMap;
 
 public class LRUCache<K, V> implements Cache<K, V> {
-
     private int size;
     private HashMap<K, LRUCacheEntry<K, V>> values;
     private LRUCacheEntry first;
@@ -17,8 +16,6 @@ public class LRUCache<K, V> implements Cache<K, V> {
 
     @Override
     public void put(K key, V value) {
-        if (size < 1) return;
-
         if (values.containsKey(key)) {
             LRUCacheEntry<K, V> entry = values.get(key);
             entry.setValue(value);
@@ -38,7 +35,6 @@ public class LRUCache<K, V> implements Cache<K, V> {
 
     @Override
     public V get(K key) {
-
         if (!values.containsKey(key)) return null;
 
         LRUCacheEntry<K, V> entry = values.get(key);
@@ -59,7 +55,6 @@ public class LRUCache<K, V> implements Cache<K, V> {
     }
 
     private void removeEntry(LRUCacheEntry entry) {
-
         if (entry.getPrev() != null) {
             entry.getPrev().setNext(entry.getNext());
         } else {

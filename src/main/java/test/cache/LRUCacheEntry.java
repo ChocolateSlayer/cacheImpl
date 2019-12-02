@@ -1,7 +1,6 @@
 package test.cache;
 
 public class LRUCacheEntry<K, V> {
-
     private K key;
     private V value;
     private LRUCacheEntry prev;
