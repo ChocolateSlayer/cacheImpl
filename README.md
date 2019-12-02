@@ -7,7 +7,7 @@ Use CacheBuilder to create cache object and configure its size and eviction stra
 Cache<String, String> cache = new CacheBuilder<String, String>()
                     .size(3)
                     .typeOf(CacheType.LFU)
-                    .build();>
+                    .build();
 ```
 
 Here is 2 test classes for testing cache work. 
