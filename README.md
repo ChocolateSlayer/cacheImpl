@@ -10,7 +10,7 @@ Cache<String, String> cache = new CacheBuilder<String, String>()
                     .build();
 ```
 
-Here is 2 test classes for testing cache work. 
+Here are 2 test classes for testing cache work. 
 
 LRUCacheTests provides tests for 
 * Item should be put and get from cache
