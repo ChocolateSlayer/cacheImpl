@@ -10,7 +10,7 @@ class CacheApplicationTests {
     @Test
     public void shouldCreateExpectedObject() throws Exception {
 
-        int size = 3;
+        int size = 5;
         Cache lruCache = new CacheBuilder()
                 .size(size)
                 .typeOf(CacheType.LRU)
